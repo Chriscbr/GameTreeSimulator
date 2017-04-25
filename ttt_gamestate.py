@@ -20,8 +20,7 @@ class TTTGameState:
 
     def __init__(self, board=None, to_move=None):
         if board is None:
-            self.board = [[TTTGameState.EMPTY for x in range(0, 3)]
-                          for x in range(0, 3)]
+            self.board = [TTTGameState.EMPTY for x in range(0, 9)]
         else:
             self.board = board
 
@@ -31,26 +30,45 @@ class TTTGameState:
             self.to_move = to_move
 
     # returns if current board state is valid
-    # doesn't check if state is specifically "reachable" through gameplay
     def is_valid_state(self):
+
+        # self.to_move is valid
         if not (self.to_move == TTTGameState.ALLY
                 or self.to_move == TTTGameState.ENEMY):
             return False
-        if len(self.board) != 3:
+
+        # self.board is valid size
+        if len(self.board) != 9:
             return False
-        for i in range(0, 3):
-            if len(self.board[i]) != 3:
+
+        total_x = 0
+        total_o = 0
+
+        # values in self.board are valid
+        for i in range(0, 9):
+            val = self.board[i]
+            if not (val == TTTGameState.EMPTY or val == TTTGameState.X
+                    or val == TTTGameState.O):
                 return False
-            for j in range(0, 3):
-                val = self.board[i][j]
-                if not (val == TTTGameState.EMPTY or val == TTTGameState.X
-                        or val == TTTGameState.O):
-                    return False
+            if val == TTTGameState.X:
+                total_x += 1
+            if val == TTTGameState.O:
+                total_o += 1
+
+        # number of X's and O's placed is valid
+        if self.to_move == TTTGameState.ALLY and total_x - total_o != 0:
+            return False
+        if self.to_move == TTTGameState.ENEMY and total_x - total_o != 1:
+            return False
+
         return True
 
     # return whether current state is a finished game
     def is_goal_state(self):
-        combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8]
+        if not self.is_valid_state():
+            return False
+
+        combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
                         [0, 3, 6], [1, 4, 7], [2, 5, 8],
                         [0, 4, 8], [2, 4, 6]]
         # check X's
@@ -73,38 +91,38 @@ class TTTGameState:
         return False
 
     # returns a new board, replacing value in current board with new value
-    def replace_with(self, x, y, val):
+    def replace_with(self, x, val):
         new_state = copy.deepcopy(self)
-        new_state.board[x][y] = val
+        new_state.board[x] = val
         return new_state
 
     # returns a list of all states that can follow from the current state
     def get_next_states(self):
         new_states = []
-        if self.to_move is TTTGameState.ALLY:
-            to_place = TTTGameState.X
-        else:
-            to_place = TTTGameState.O
-        for i in range(0, 3):
-            for j in range(0, 3):
-                if self.board[i][j] is TTTGameState.EMPTY:
-                    new_state = self.replace_with(i, j, to_place)
-                    new_states.append(new_state)
+        to_place = (TTTGameState.X if self.to_move == TTTGameState.ALLY
+                    else TTTGameState.O)
+        next_move = (TTTGameState.ENEMY if self.to_move == TTTGameState.ALLY
+                     else TTTGameState.ALLY)
+        for i in range(0, 9):
+            if self.board[i] is TTTGameState.EMPTY:
+                new_state = self.replace_with(i, to_place)
+                new_state.to_move = next_move
+                new_states.append(new_state)
         return new_states
 
     def __repr__(self):
-        return 'ttt_gamestate.TTTGameState({b}, {tm})'\
-            .format(b=self.board, tm=self.to_move)
+        return ('ttt_gamestate.TTTGameState({b}, {tm})'
+                .format(b=self.board, tm=self.to_move))
 
     def __str__(self):
         def val(x):
             return '-' if x == TTTGameState.EMPTY else x
 
-        values = [val(mark) for row in self.board for mark in row]
+        values = [val(mark) for mark in self.board]
         to_move = 'X' if self.to_move == TTTGameState.EMPTY else 'O'
-        return '[{v[0]} {v[1]} {v[2]}]\n' \
-               '[{v[3]} {v[4]} {v[5]}] ({tm} to move)\n' \
-               '[{v[6]} {v[7]} {v[8]}]'.format(v=values, tm=to_move)
+        return ('[{v[0]} {v[1]} {v[2]}]\n'
+                '[{v[3]} {v[4]} {v[5]}] ({tm} to move)\n'
+                '[{v[6]} {v[7]} {v[8]}]'.format(v=values, tm=to_move))
 
     def __eq__(self, other):
             return self.board == other.board and self.to_move == other.to_move
