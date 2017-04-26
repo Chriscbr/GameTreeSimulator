@@ -19,7 +19,10 @@ class GameTree:
         next_states = tree_node.data.get_next_states()
         children = []
         for state in next_states:
-            children.append(GameTree.generate_subtree(TreeNode(state)))
+            if state.is_goal_state():
+                children.append(TreeNode(state))
+            else:
+                children.append(GameTree.generate_subtree(TreeNode(state)))
         new_tree = TreeNode(tree_node.data, children)
         return new_tree
 
