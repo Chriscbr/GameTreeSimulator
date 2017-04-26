@@ -45,6 +45,13 @@ class TreeNode:
 
     def __str__(self):
         """code adapted from http://stackoverflow.com/questions/1649027/"""
+
+        def indent_premade_string(string, prefix):
+            parts = string.split('\n')
+            new_parts = [parts[0]] + list(map(lambda x: prefix + x, parts[1:]))
+            new_string = '\n'.join(new_parts)
+            return new_string
+
         output = ''
         stack = [[self]]
         while len(stack) > 0:
@@ -56,7 +63,7 @@ class TreeNode:
                 indent = ''
                 for i in range(0, len(stack) - 1):
                     indent += '| ' if len(stack[i]) > 0 else '  '
-                output += indent + '+-' + str(tree.data) + '\n'
+                output += indent + '+-' + indent_premade_string(str(tree.data), indent + ' -') + '\n'
                 if len(tree.children) > 0:
                     stack.append(tree.children)
         return output

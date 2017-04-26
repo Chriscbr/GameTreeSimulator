@@ -129,7 +129,12 @@ class TTTGameState:
 
     def __str__(self):
         def val(x):
-            return '-' if x == TTTGameState.EMPTY else x
+            if x == TTTGameState.X:
+                return 'X'
+            elif x == TTTGameState.O:
+                return 'O'
+            else:
+                return '-'
 
         values = [val(mark) for mark in self.board]
         to_move = 'X' if self.to_move == TTTGameState.EMPTY else 'O'

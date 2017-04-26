@@ -19,3 +19,13 @@ class TestGameTree(unittest.TestCase):
                          '  | +-grandchild_d\n'
                          '  | +-grandchild_e\n'
                          '  +-child_c\n')
+
+    def test_gametree_generate(self):
+        t0 = ttt_gamestate.TTTGameState([1, 2, 1, 0, 0, 2, 1, 2, 1], 1)
+        gt = gametree.GameTree(t0)
+        print(gt)
+
+    # def test_gametree_generate_complete(self):
+        # f = open('test_output.txt', 'w')
+        # f.write(str(gt))
+        # f.close()
