@@ -65,13 +65,16 @@ class TTTGameState:
 
     # return whether current state is a finished game
     def is_goal_state(self):
+        return self.is_win_state() or self.is_loss_state()
+
+    def is_win_state(self):
         if not self.is_valid_state():
             return False
 
         combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
                         [0, 3, 6], [1, 4, 7], [2, 5, 8],
                         [0, 4, 8], [2, 4, 6]]
-        # check X's
+
         for combo in combinations:
             total = 0
             for num in combo:
@@ -79,7 +82,16 @@ class TTTGameState:
                     total += 1
             if total == 3:
                 return True
-        # check O's
+        return False
+
+    def is_loss_state(self):
+        if not self.is_valid_state():
+            return False
+
+        combinations = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
+                        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                        [0, 4, 8], [2, 4, 6]]
+
         for combo in combinations:
             total = 0
             for num in combo:
@@ -87,7 +99,6 @@ class TTTGameState:
                     total += 1
             if total == 3:
                 return True
-
         return False
 
     # returns a new board, replacing value in current board with new value
