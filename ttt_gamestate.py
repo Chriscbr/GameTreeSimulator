@@ -67,6 +67,7 @@ class TTTGameState:
     def is_goal_state(self):
         return self.is_win_state() or self.is_loss_state()
 
+    # returns whether current state is a win for the player
     def is_win_state(self):
         if not self.is_valid_state():
             return False
@@ -84,6 +85,7 @@ class TTTGameState:
                 return True
         return False
 
+    # returns whether current state is a loss for the player
     def is_loss_state(self):
         if not self.is_valid_state():
             return False
