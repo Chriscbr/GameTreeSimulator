@@ -131,7 +131,7 @@ class TTTGameState:
         return new_states
 
     def __repr__(self):
-        return ('ttt_gamestate.TTTGameState({b}, {tm})'
+        return ('TTTGameState({b}, {tm})'
                 .format(b=self.board, tm=self.to_move))
 
     def __str__(self):
