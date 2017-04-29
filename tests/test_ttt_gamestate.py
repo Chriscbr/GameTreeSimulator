@@ -1,5 +1,5 @@
-from ttt_gamestate import TTTGameState
 
+from ttt_gamestate import TTTGameState
 def test_str():
     t0 = TTTGameState()
     assert str(t0) ==  ('[- - -]\n'
@@ -55,4 +55,3 @@ def test_is_goal_state():
                        2, 1, 2,
                        2, 1, 1], 1)
     assert t3.is_goal_state()
-
