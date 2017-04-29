@@ -57,7 +57,7 @@ class TestTTTGameState(unittest.TestCase):
         t2 = ttt_gamestate.TTTGameState([1, 2, 1,
                                          1, 1, 2,
                                          2, 1, 2], 1)
-        self.assertEqual(t2.is_goal_state(), False)
+        self.assertEqual(t2.is_goal_state(), True)
         t3 = ttt_gamestate.TTTGameState([1, 2, 1,
                                          2, 1, 2,
                                          2, 1, 1], 1)
