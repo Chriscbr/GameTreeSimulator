@@ -1,8 +1,6 @@
 from ttt_gamestate import TTTGameState
 from gametree import TreeNode, GameTree
 
-import difflib
-
 
 def test_treenode_str():
     grandchild_d = TreeNode('grandchild_d')
