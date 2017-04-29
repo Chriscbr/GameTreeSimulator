@@ -151,3 +151,6 @@ class TTTGameState:
 
     def __eq__(self, other):
             return self.board == other.board and self.to_move == other.to_move
+
+    def __hash__(self):
+        return hash((self.to_move,) + tuple(self.board))

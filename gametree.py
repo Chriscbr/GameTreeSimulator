@@ -1,36 +1,44 @@
 class GameTree:
-    """Class that represents a game tree for any given type of gamestate."""
+    """Class that represents a game tree for any given type of game state."""
 
-    def __init__(self, initial_state=None):
-        if initial_state is None:
-            self._initial_state = None
-            self._tree = None
+    def __init__(self, initial_state=None, tree=None):
+        if (initial_state is not None and tree is not None)\
+                or (initial_state is None and tree is None):
+            raise Exception('Invalid arguments to GameTree constructor.')
+        elif initial_state is not None:
+            self._root = self.generate_tree(initial_state)
         else:
-            self._initial_state = initial_state
-            self._tree = self.generate_tree(initial_state)
+            self._root = tree
 
+    # returns the root
+    def get_root(self):
+        return self._root
+
+    # generates a tree given an initial state
     @staticmethod
     def generate_tree(initial_state):
-        tree = GameTree.generate_subtree(TreeNode(initial_state))
+        def generate_subtree(tree_node):
+            next_states = tree_node.data.get_next_states()
+            children = []
+            for state in next_states:
+                if state.is_goal_state():
+                    children.append(TreeNode(state))
+                else:
+                    children.append(generate_subtree(TreeNode(state)))
+            new_tree = TreeNode(tree_node.data, children)
+            return new_tree
+
+        tree = generate_subtree(TreeNode(initial_state))
         return tree
 
-    @staticmethod
-    def generate_subtree(tree_node):
-        next_states = tree_node.data.get_next_states()
-        children = []
-        for state in next_states:
-            if state.is_goal_state():
-                children.append(TreeNode(state))
-            else:
-                children.append(GameTree.generate_subtree(TreeNode(state)))
-        new_tree = TreeNode(tree_node.data, children)
-        return new_tree
-
     def __repr__(self):
-        return 'gametree.GameTree({i})'.format(i=self._initial_state)
+        return 'GameTree({r})'.format(r=self._root.data)
 
     def __str__(self):
-        return str(self._tree)
+        return str(self._root)
+
+    def __eq__(self, other):
+        return self._root == other.get_root()
 
 
 class TreeNode:
@@ -70,3 +78,9 @@ class TreeNode:
                 if len(tree.children) > 0:
                     stack.append(tree.children)
         return output
+
+    def __eq__(self, other):
+        return self.data == other.data and set(self.children) == set(other.children)
+
+    def __hash__(self):
+        return hash((self.data,) + tuple(self.children))
