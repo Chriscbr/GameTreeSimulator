@@ -33,8 +33,8 @@ class TTTGameState:
     def is_valid_state(self):
 
         # self.to_move is valid
-        if not (self.to_move == TTTGameState.ALLY
-                or self.to_move == TTTGameState.ENEMY):
+        if not (self.to_move == TTTGameState.ALLY or
+                self.to_move == TTTGameState.ENEMY):
             return False
 
         # self.board is valid size
@@ -47,8 +47,9 @@ class TTTGameState:
         # values in self.board are valid
         for i in range(0, 9):
             val = self.board[i]
-            if not (val == TTTGameState.EMPTY or val == TTTGameState.X
-                    or val == TTTGameState.O):
+            if not (val == TTTGameState.EMPTY or
+                    val == TTTGameState.X or
+                    val == TTTGameState.O):
                 return False
             if val == TTTGameState.X:
                 total_x += 1
@@ -74,7 +75,8 @@ class TTTGameState:
 
     # return whether current state is a finished game
     def is_goal_state(self):
-        return self.is_win_state() or self.is_loss_state() or self.is_draw_state()
+        return (self.is_win_state() or self.is_loss_state() or
+                self.is_draw_state())
 
     # returns whether current state is a win for the player
     def is_win_state(self):

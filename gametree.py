@@ -74,13 +74,16 @@ class TreeNode:
                 indent = ''
                 for i in range(0, len(stack) - 1):
                     indent += '| ' if len(stack[i]) > 0 else '  '
-                output += indent + '+-' + indent_premade_string(str(tree.data), indent + ' -') + '\n'
+                output += indent + '+-'
+                output += indent_premade_string(str(tree.data), indent + ' -')
+                output += '\n'
                 if len(tree.children) > 0:
                     stack.append(tree.children)
         return output
 
     def __eq__(self, other):
-        return self.data == other.data and set(self.children) == set(other.children)
+        return (self.data == other.data and
+                set(self.children) == set(other.children))
 
     def __hash__(self):
         return hash((self.data,) + tuple(self.children))
