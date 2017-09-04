@@ -1,4 +1,4 @@
-from ttt_gamestate import TTTGameState
+from src.ttt_gamestate import TTTGameState
 
 
 def test_str():

@@ -1,5 +1,5 @@
-from ttt_gamestate import TTTGameState
-from gametree import TreeNode, GameTree
+from src.ttt_gamestate import TTTGameState
+from src.gametree import TreeNode, GameTree
 
 
 def test_treenode_str():
@@ -21,7 +21,8 @@ def test_gametree_generate():
     root_state = TTTGameState([1, 2, 1, 0, 0, 2, 1, 2, 1], 1)
     gt0 = GameTree(root_state)
     grandchild = TreeNode(TTTGameState([1, 2, 1, 2, 1, 2, 1, 2, 1], 1))
-    child1 = TreeNode(TTTGameState([1, 2, 1, 2, 0, 2, 1, 2, 1], 0), [grandchild])
+    child1 = TreeNode(TTTGameState([1, 2, 1, 2, 0, 2, 1, 2, 1], 0),
+                      [grandchild])
     child2 = TreeNode(TTTGameState([1, 2, 1, 0, 2, 2, 1, 2, 1], 0))
     root = TreeNode(root_state, [child1, child2])
     gt1 = GameTree(tree=root)
